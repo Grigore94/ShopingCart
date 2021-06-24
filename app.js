@@ -8,6 +8,7 @@ const cartContent = document.querySelector(".cart-content");
 const cartProducts = document.querySelector(".products-center");
 
 let cart = [];
+let buttonsDOM = [];
 class Products {
   async getProducts() {
     try {
@@ -29,7 +30,7 @@ class Products {
 
 class UI {
   displayProducts(products) {
-    console.log(products);
+   
     let result = "";
     products.forEach((product) => {
       result += `
@@ -52,6 +53,7 @@ class UI {
   getBagButton() {
     const buttons = [...document.querySelectorAll(".bag-btn")];
     console.log(buttons);
+    buttonsDOM = buttons;
     buttons.forEach(button => {
       let id = button.dataset.id;
       console.log(id);
@@ -65,6 +67,8 @@ class UI {
           event.target.innerText = "In Cart";
           event.target.disabled = true;
           //getting product
+          let cartItem = {...LocalStorage.getProduct(id), amount:1}
+          console.log(cartItem);
           //add product to the cart
           //save item to localstorage
           //set cart values
@@ -81,6 +85,13 @@ class LocalStorage {
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
     console.log(products);
+  }
+  //another satatic method to reuse later in getBagButton method
+  static getProduct(id) {
+    //since store it as string i need to parse it 
+    let products = JSON.parse(localStorage.getItem("products"));
+    //geting the item by maching id
+    return products.find(product => product.id === id)
   }
 }
 

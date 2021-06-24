@@ -17,7 +17,7 @@ class Products {
       products = products.map((item) => {
         const { title, price } = item.fields;
         const { id } = item.sys;
-        const  image  = item.fields.image.fields.file.url;
+        const image = item.fields.image.fields.file.url;
         return { title, price, id, image };
       });
       return products;
@@ -45,15 +45,25 @@ class UI {
         </article>
         `;
     });
+    //setting up cart items and inserting them with cartProducts innerHtml property for the element
     cartProducts.innerHTML = result;
   }
 }
 
-class localStorage {}
+class localStorage {
+  //static method able to reuse it without reinstancieiting the class
+  static saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
   const products = new Products();
+
   //gettin all products method
-  products.getProducts().then((products) => ui.displayProducts(products));
+  products.getProducts().then((products) => {
+    ui.displayProducts(products);
+    Storage.saveProducts(products);
+  });
 });

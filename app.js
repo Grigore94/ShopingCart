@@ -70,7 +70,9 @@ class UI {
           let cartItem = {...LocalStorage.getProduct(id), amount:1}
           console.log(cartItem);
           //add product to the cart
+          cart = [...cart, cartItem];
           //save item to localstorage
+          LocalStorage.saveCart(cart);
           //set cart values
           //display cart item
           //show the cart
@@ -92,6 +94,9 @@ class LocalStorage {
     let products = JSON.parse(localStorage.getItem("products"));
     //geting the item by maching id
     return products.find(product => product.id === id)
+  }
+  static saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 }
 

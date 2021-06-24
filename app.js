@@ -48,6 +48,11 @@ class UI {
     //setting up cart items and inserting them with cartProducts innerHtml property for the element
     cartProducts.innerHTML = result;
   }
+  //getting bag button fn bc we cant use only nodelist we will get nothing before even products are loaded
+  getBagButton() {
+    const buttons = [...document.querySelectorAll(".bag-btn")];
+    console.log(buttons);
+  }
 }
 
 class localStorage {
@@ -61,9 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const ui = new UI();
   const products = new Products();
 
-  //gettin all products method
-  products.getProducts().then((products) => {
-    ui.displayProducts(products);
-    Storage.saveProducts(products);
-  });
+  //gettin all products//buttons method
+  products
+    .getProducts()
+    .then((products) => {
+      ui.displayProducts(products);
+      Storage.saveProducts(products);
+    })
+    .then(() => {
+      ui.getBagButton;
+    });
 });

@@ -60,17 +60,23 @@ class UI {
       if(inCart) {
         button.innerText = "In Cart";
         button.disabled = true;
-      }else{
+      }
         button.addEventListener("click", (event) => {
           event.target.innerText = "In Cart";
           event.target.disabled = true;
+          //getting product
+          //add product to the cart
+          //save item to localstorage
+          //set cart values
+          //display cart item
+          //show the cart
         })
-      }
+      
     })
   }
 }
 
-class localStorage {
+class LocalStorage {
   //static method able to reuse it without reinstancieiting the class
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
@@ -87,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .getProducts()
     .then((products) => {
       ui.displayProducts(products)
-      Storage.saveProducts(products)
+      LocalStorage.saveProducts(products)
     })
     .then(() => {
-      //calling getbadbutton methot after loading all the products
-      ui.getBagButton;
+      //calling getbagbutton methot after loading all the products
+      ui.getBagButton();
     });
 });

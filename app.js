@@ -52,6 +52,21 @@ class UI {
   getBagButton() {
     const buttons = [...document.querySelectorAll(".bag-btn")];
     console.log(buttons);
+    buttons.forEach(button => {
+      let id = button.dataset.id;
+      console.log(id);
+      //find method for getting machind items from cart by id
+      let inCart = cart.find(item => item.id === id);
+      if(inCart) {
+        button.innerText = "In Cart";
+        button.disabled = true;
+      }else{
+        button.addEventListener("click", (event) => {
+          event.target.innerText = "In Cart";
+          event.target.disabled = true;
+        })
+      }
+    })
   }
 }
 
@@ -59,6 +74,7 @@ class localStorage {
   //static method able to reuse it without reinstancieiting the class
   static saveProducts(products) {
     localStorage.setItem("products", JSON.stringify(products));
+    console.log(products);
   }
 }
 
@@ -70,10 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
   products
     .getProducts()
     .then((products) => {
-      ui.displayProducts(products);
-      Storage.saveProducts(products);
+      ui.displayProducts(products)
+      Storage.saveProducts(products)
     })
     .then(() => {
+      //calling getbadbutton methot after loading all the products
       ui.getBagButton;
     });
 });

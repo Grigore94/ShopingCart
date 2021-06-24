@@ -74,11 +74,25 @@ class UI {
           //save item to localstorage
           LocalStorage.saveCart(cart);
           //set cart values
+          this.setCartValue(cart)
           //display cart item
           //show the cart
         })
       
     })
+  }
+  setCartValue(cart) {
+    let temptTotal = 0;
+    let itemsTotal = 0;
+    cart.map(item => {
+      temptTotal += item.price * item.amount;
+      itemsTotal += item.amount
+    })
+    //updaiting the values of cart total and cart items
+    cartTotal.innerText = parseFloat(temptTotal.toFixed(2))
+    console.log(cartTotal)
+    cartItems.innerText = itemsTotal;
+    console.log(cartItems)
   }
 }
 

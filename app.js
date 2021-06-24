@@ -76,6 +76,7 @@ class UI {
           //set cart values
           this.setCartValue(cart)
           //display cart item
+this.addCartItem(item);
           //show the cart
         })
       
@@ -88,11 +89,28 @@ class UI {
       temptTotal += item.price * item.amount;
       itemsTotal += item.amount
     })
-    //updaiting the values of cart total and cart items
-    cartTotal.innerText = parseFloat(temptTotal.toFixed(2))
-    console.log(cartTotal)
+    //updaiting the values of cart total and cart items toFixed method to convert to string and keep only two decimals
+    cartTotal.innerText = parseFloat(temptTotal.toFixed(2));
     cartItems.innerText = itemsTotal;
-    console.log(cartItems)
+    console.log(cartItems, cartTotal)
+  }
+  addCartItem(item) {
+    const div = documentCreateElement("div")
+    div.classList.add(".cart-item")
+    div.innerHTML = `
+    <img src=${item.image} alt="product"/>
+    <div>
+        <h4>${item.price}</h4>
+        <h5>$${item.price}</h5>
+        <span class="remove-item" data-id=${item.id}>remove</span>
+    </div>
+    <div>
+        <i class="fa fa-chevron-up" data-id=${item.id}></i>
+        <p class="item-amount">${item.amount}</p>
+        <i class="fa fa-chevron-down" data-id=${item.id}></i>
+    </div>
+    `
+    cartContent.appenChild(div);
   }
 }
 

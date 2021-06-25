@@ -96,7 +96,7 @@ class UI {
     console.log(cartItems, cartTotal)
   }
   addCartItem(item) {
-    const div = documentCreateElement("div")
+    const div = document.createElement("div")
     div.classList.add(".cart-item")
     div.innerHTML = `
     <img src=${item.image} alt="product"/>
@@ -111,15 +111,15 @@ class UI {
         <i class="fa fa-chevron-down" data-id=${item.id}></i>
     </div>
     `
-    cartContent.appenChild(div);
+    cartContent.appendChild(div);
   }
   showCart() {
-    cartOverlay.classList.add("transparentBcs");
-    cartDOM.classList.add("show-cart");
+    cartOverlay.classList.add("transparentBcg");
+    cartDom.classList.add("showCart");
   }
   hideCart() {
-    cartOverlay.classList.remove("transparentBcs");
-    cartDOM.classList.remove("show-cart");
+    cartOverlay.classList.remove("transparentBcg");
+    cartDom.classList.remove("showCart");
   }
   setApp() {
   cart = LocalStorage.getCart();

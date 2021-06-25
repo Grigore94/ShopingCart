@@ -180,7 +180,7 @@ body {
   height: 100%;
   overflow: scroll;
   z-index: 3;
-  background: rgb(231, 226, 221);
+  /* background: rgb(231, 226, 221); */
   padding: 1.5rem;
   width: 100%;
   transition: var(--mainTransition);

@@ -63,6 +63,8 @@ class UI {
       if(inCart) {
         button.innerText = "In Cart";
         button.disabled = true;
+        button.style.cursor = "initial"
+        button.style.color = "#a17510"
       }
         button.addEventListener("click", (event) => {
           event.target.innerText = "In Cart";
@@ -152,7 +154,7 @@ class UI {
     }else if (event.target.classList.contains("fa-chevron-up"))
     {
       let addAmount = event.target;
-      let id = addAmount.datasetId;
+      let id = addAmount.dataset.id;
       let tempItem = cart.find(item => item.id === id);
       tempItem.amount = tempItem.amount + 1;
       //updating localStorage for amountUp
@@ -160,21 +162,22 @@ class UI {
       //updating ui
       this.setCartValue(cart);
       addAmount.nextElementSibling.innerText = tempItem.amount
-    }else if (event.target.classList.contains("fa-chevron-down")){
+    }else if (event.target.classList.contains("fa-chevron-down"))
+   {
       let substractAmount = event.target
       let id = substractAmount.dataset.id;
       let tempItem = cart.find(item => item.id === id);
       tempItem.amount = tempItem.amount - 1;
   
       if(tempItem.amount > 0){
-        localStorage.saveCart(cart);
+        LocalStorage.saveCart(cart);
         this.setCartValue(cart);
         substractAmount.previousElementSibling.innerText = tempItem.amount
     }else{
       cartContent.removeChild(substractAmount.parentElement.parentElement);
       this.removeItem(id)
     }
-  }
+   }
   })
   }
   clearCart() {

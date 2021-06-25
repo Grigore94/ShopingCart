@@ -5,6 +5,7 @@ const cartOverlay = document.querySelector(".cart-overlay");
 const cartItems = document.querySelector(".cart-items");
 const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
+const clearCartBtn = document.querySelector(".clear-cart")
 const cartProducts = document.querySelector(".products-center");
 
 let cart = [];
@@ -52,11 +53,11 @@ class UI {
   //getting bag button fn bc we cant use only nodelist we will get nothing before even products are loaded
   getBagButton() {
     const buttons = [...document.querySelectorAll(".bag-btn")];
-    console.log(buttons);
+    // console.log(buttons);
     buttonsDOM = buttons;
     buttons.forEach(button => {
       let id = button.dataset.id;
-      console.log(id);
+      // console.log(id);
       //find method for getting machind items from cart by id
       let inCart = cart.find(item => item.id === id);
       if(inCart) {
@@ -97,11 +98,11 @@ class UI {
   }
   addCartItem(item) {
     const div = document.createElement("div")
-    div.classList.add(".cart-item")
+    div.classList.add("cart-item")
     div.innerHTML = `
     <img src=${item.image} alt="product"/>
     <div>
-        <h4>${item.price}</h4>
+        <h4>${item.title}</h4>
         <h5>$${item.price}</h5>
         <span class="remove-item" data-id=${item.id}>remove</span>
     </div>
@@ -135,14 +136,57 @@ class UI {
   }
   cartLogic(){
     //this will point to the ui class //clear cart btn
-    closeCartBtn.addEventListener("click", () => {
+    clearCartBtn.addEventListener("click", () => {
       this.clearCart();
     });
-    //up down functionality
+    //remove & up & down functionality by bubling
+    cartContent.addEventListener("click" , event => {
+    if(event.target.classList.contains("remove-item"))
+    {
+     let removeItem = event.target;
+     let id = removeItem.dataset.id;
+     //removing from cart
+     this.removeItem(id) 
+     //removing from dom
+     cartContent.removeChild(removeItem.parentElement.parentElement); 
+    }else if (event.target.classList.contains("fa-chevron-up"))
+    {
+      let addAmount = event.target;
+      let id = addAmount.datasetId;
+      let tempItem = cart.find(item => item.id === id);
+      tempItem.amount = tempItem.amount + 1;
+      //updating localStorage for amountUp
+      LocalStorage.saveCart(cart)
+      //updating ui
+      this.setCartValue(cart);
+      addAmount.nextElementSibling.innerText = tempItem.amount
+    }else if (event.target.classList.contains("fa-chevron-down")){
+      let substractAmount = event.target
+      let id = substractAmount.dataset.id;
+      let tempItem = cart.find(item => item.id === id);
+      tempItem.amount = tempItem.amount - 1;
+  
+      if(tempItem.amount > 0){
+        localStorage.saveCart(cart);
+        this.setCartValue(cart);
+        substractAmount.previousElementSibling.innerText = tempItem.amount
+    }else{
+      cartContent.removeChild(substractAmount.parentElement.parentElement);
+      this.removeItem(id)
+    }
+  }
+  })
   }
   clearCart() {
-let cartItems = cart.map(item => item.id);
-cartItems.forEach(id => this.removeItem(id))
+  let cartItems = cart.map(item => item.id);
+  cartItems.forEach(id => this.removeItem(id))
+  console.log(cartContent.children)
+  //removing items from DOM while there are children on specific car keep removing them
+  while(cartContent.children.lenght > 0) {
+    cartContent.removeChild(cartContent.children[0])
+  }
+  //call hideCart method to hide the card when the cart is empty
+  this.hideCart();
   }
   removeItem(id){
 cart = cart.filter(item => item.id !== id);
@@ -150,9 +194,9 @@ this.setCartValue(cart);
 LocalStorage.saveCart(cart);
 let button = this.getSingleBtn(id);
 button.disebled = false;
-button.innerHTML = `<i class="fa fa-sopping-cart></i>add to cart`;
+button.innerHTML = `<i class="fa fa-sopping-cart">add to cart</i>`;
   }
-  getSingleBtn() {
+  getSingleBtn(id) {
     return buttonsDOM.find(button => button.dataset.id === id)
   }
 }

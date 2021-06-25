@@ -133,6 +133,28 @@ class UI {
       this.addCartItem(item)
     });
   }
+  cartLogic(){
+    //this will point to the ui class //clear cart btn
+    closeCartBtn.addEventListener("click", () => {
+      this.clearCart();
+    });
+    //up down functionality
+  }
+  clearCart() {
+let cartItems = cart.map(item => item.id);
+cartItems.forEach(id => this.removeItem(id))
+  }
+  removeItem(id){
+cart = cart.filter(item => item.id !== id);
+this.setCartValue(cart);
+LocalStorage.saveCart(cart);
+let button = this.getSingleBtn(id);
+button.disebled = false;
+button.innerHTML = `<i class="fa fa-sopping-cart></i>add to cart`;
+  }
+  getSingleBtn() {
+    return buttonsDOM.find(button => button.dataset.id === id)
+  }
 }
 
 class LocalStorage {
@@ -172,5 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(() => {
       //calling getbagbutton methot after loading all the products
       ui.getBagButton();
+      ui.cartLogic();
     });
 });
